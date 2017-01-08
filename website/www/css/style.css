@@ -80,7 +80,6 @@ progress::-webkit-progress-value {
 .button > p{
   position: absolute;
   width: 100%;
-  top: 60%;
   left: 0px;
   font-size: 2.8vw;
 }
@@ -88,4 +87,25 @@ progress::-webkit-progress-value {
 .button-back {
   border-radius: 4px;
   padding-top: 0px;
+}
+
+
+@media (min-width: 992px) {
+  .button > p{
+    top: 78%;
+  }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 481px) and (max-width: 991px) {
+  .button > p{
+    top: 68%;
+  }
+}
+
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+  .button > p{
+    top: 60%;
+  }
 }
