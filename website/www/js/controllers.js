@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', [ 'ngFitText' ])
 
 .controller('AppCtrl', function($scope, $state, $rootScope) {
   $scope.launch = function() {
@@ -84,7 +84,7 @@ angular.module('starter.controllers', [])
     $('#btn_back').show();
     $('#btn_danger, #btn_comportement, #btn_anomalie, #subcategory_danger, #subcategory_comportement, #subcategory_anomalie').hide();
 
-    $('#btn_clicked').html("<h1 class='center'>" + angular.element(btn_clicked).html() + "</h1>");
+    $('#btn_clicked').html("<h1 class='center'>" + angular.element(btn_clicked).text() + "</h1>");
     $(btn_clicked.id.replace("btn_", "#subcategory_")).show();
   }
 
