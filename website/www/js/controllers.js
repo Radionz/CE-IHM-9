@@ -51,7 +51,7 @@ angular.module('starter.controllers', [ 'ngFitText' ])
   });
 })
 
-.controller('MainCtrl', function($scope, $state, $rootScope, $ionicPopup) {
+.controller('MainCtrl', function($scope, $state, $rootScope, $ionicPopup, $ionicModal) {
   $scope.$on("$ionicView.beforeEnter", function(event, data){
     hidesubcategoryregory();
   });
@@ -61,14 +61,32 @@ angular.module('starter.controllers', [ 'ngFitText' ])
   }
 
   $scope.btnCategory = function(event) {
-    $rootScope.socket.emit('message', event.currentTarget.id);
+    $rootScope.socket.emit('message_cat', event.currentTarget.id);
     displaysubcategoryregory(event.currentTarget);
   };
-
   $scope.btnSubCategory = function(event) {
-    $rootScope.socket.emit('message', event.currentTarget.id);
+    $rootScope.socket.emit('message_subcat', event.currentTarget.id);
     hidesubcategoryregory();
   };
+
+  $rootScope.socket.on('message_cat', function(msg) {
+    console.log("CAT:" + msg);
+    $scope.category = msg.replace("btn_", "");
+    $ionicModal.fromTemplateUrl('templates/modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+  });
+
+  $rootScope.socket.on('message_subcat', function(msg){
+    console.log("SUBCAT:" + msg);
+  });
 
   $scope.btnBack = function() {
     hidesubcategoryregory();
