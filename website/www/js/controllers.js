@@ -28,13 +28,6 @@ angular.module('starter.controllers', [ 'ngFitText' ])
 
     $rootScope.socket = io.connect(SERVER_ADDR[WORK_STATE]);
 
-    // $ionicLoading.show({
-    //   template: 'Loading...',
-    //   duration: 3000
-    // }).then(function(){
-    //   console.log("The loading indicator is now displayed");
-    // });
-
     $rootScope.socket.on('ack', function(msg){
       if(msg == "connected"){
         $( "progress" ).animate({
@@ -51,7 +44,8 @@ angular.module('starter.controllers', [ 'ngFitText' ])
 })
 
 .controller('MainCtrl', function($scope, $state, $rootScope, $ionicPopup, $ionicModal) {
-  $scope.$on("$ionicView.beforeEnter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data){$scope.countdownCat = 5;
+    $scope.countdownCat = 5;
     hidesubcategoryregory();
   });
 
@@ -62,25 +56,54 @@ angular.module('starter.controllers', [ 'ngFitText' ])
   $scope.btnCategory = function(event) {
     $rootScope.socket.emit('message_cat', event.currentTarget.id);
     displaysubcategoryregory(event.currentTarget);
+    clearTimeout($scope.timeout_cat);
+    $scope.timeout_cat = setTimeout(function(){
+      hidesubcategoryregory();
+    }, 5000);
   };
   $scope.btnSubCategory = function(event) {
     $rootScope.socket.emit('message_subcat', event.currentTarget.id);
     hidesubcategoryregory();
   };
 
+  function start_countdown(time) {
+    $scope.countdownCat = time;
+    setInterval(function () {
+      if(time > 0)
+        start_countdown(time-1);
+    }, 1000);
+  }
+
   $rootScope.socket.on('message_cat', function(msg) {
     console.log("CAT:" + msg);
     $scope.category = msg.replace("btn_", "");
+
+    if (typeof $scope.modal != "undefined") {
+      if ($scope.modal.isShown())
+        $scope.modal.hide();
+
+      $scope.modal.remove();
+    }
+
     $ionicModal.fromTemplateUrl('templates/modal.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.modal = modal;
+      $scope.modal.show();
+      clearTimeout($scope.timeout);
+      $scope.timeout = setTimeout(function(){
+        $scope.modal.hide();
+      }, 5000);
+
+      $scope.countdownCat = 5;
+      clearTimeout($scope.timeout_cat);
+      $scope.timeout_cat = setInterval(function () {
+        if($scope.countdownCat > 0)
+          $scope.countdownCat = $scope.countdownCat - 1;
+      }, 1000);
     });
 
-    $scope.closeModal = function() {
-      $scope.modal.hide();
-    };
   });
 
   $rootScope.socket.on('message_subcat', function(msg){
