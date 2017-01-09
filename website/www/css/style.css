@@ -114,3 +114,13 @@ progress::-webkit-progress-value {
     top: 60%;
   }
 }
+
+.badge-volume {
+  background-color: grey;
+  color: white;
+}
+
+.badge-range {
+  background-color: grey;
+  color: white;
+}

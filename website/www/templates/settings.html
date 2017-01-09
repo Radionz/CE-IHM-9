@@ -3,19 +3,21 @@
     <div class="list">
       <div class="item item-divider">
         Volume des alertes sonores (Danger uniquement)
+        <span class="badge badge-volume">{{volume}} %</span>
       </div>
       <div class="item range range-positive">
         <i class="icon ion-volume-low"></i>
-        <input type="range" name="volume">
+          <input ng-model="volume" type="range" min="0" max="100" name="volume">
         <i class="icon ion-volume-high"></i>
       </div>
     </div>
     <div class="item item-divider">
       Distance des alertes reçues
+      <span class="badge badge-range">{{range}} km</span>
     </div>
     <div class="item range range-positive">
       <i class="icon ion-ios-location"></i>
-      <input type="range" name="distance" min="1" max="10" value="3">
+        <input ng-model="range" type="range" min="0" max="10" name="distance">
     </div>
   </ion-content>
 </ion-view>
