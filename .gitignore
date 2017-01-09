@@ -35,3 +35,14 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+.bowerrc
+.editorconfig
+bower.json
+config.xml
+gulpfile.js
+hooks/README.md
+hooks/after_prepare/010_add_platform_class.js
+ionic.config.json
+package.json
+plugins/*
+scss/ionic.app.scss
