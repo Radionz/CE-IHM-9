@@ -10,7 +10,8 @@ angular.module('starter.controllers', [ 'ngFitText' ])
 })
 
 .controller('SettingsCtrl', function($scope, $state, $rootScope) {
-
+  $scope.volume = 100;
+  $scope.range = 0;
 })
 
 .controller('LoadingCtrl', function($scope, $ionicLoading, $state, $timeout, $ionicHistory, $rootScope, WORK_STATE, SERVER_ADDR) {
