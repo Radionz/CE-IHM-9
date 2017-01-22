@@ -55,7 +55,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   $urlRouterProvider.otherwise('/app/loading');
 })
 // Can be DEV or PROD
-.constant("WORK_STATE", "PROD")
+.constant("WORK_STATE", "DEV")
 .constant("SERVER_ADDR", {
   "DEV": "http://192.168.1.19:8080",
   "PROD": "http://home.dobl.fr:8080"

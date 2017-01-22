@@ -65,7 +65,7 @@ progress::-webkit-progress-value {
   position: relative;
   width:100%;
   padding-top:100%;
-  border-radius: 50%;
+  border-radius: 15%;
 }
 
 .button > img{
@@ -123,4 +123,12 @@ progress::-webkit-progress-value {
 .badge-range {
   background-color: grey;
   color: white;
+}
+
+.modal {
+  background-color: #FF5454;
+}
+
+audio {
+  display: none;
 }

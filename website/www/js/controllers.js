@@ -71,19 +71,23 @@ angular.module('starter.controllers', [ 'ngFitText' ])
     $scope.countdownCat = time;
     setInterval(function () {
       if(time > 0)
-        start_countdown(time-1);
+      start_countdown(time-1);
     }, 1000);
   }
 
   $rootScope.socket.on('message_cat', function(msg) {
     console.log("CAT:" + msg);
-    $scope.category = msg.replace("btn_", "");
+    $scope.category = msg.replace("btn_", "").toUpperCase();
 
     if (typeof $scope.modal != "undefined") {
       if ($scope.modal.isShown())
-        $scope.modal.hide();
+      $scope.modal.hide();
 
       $scope.modal.remove();
+    }
+
+    if ($scope.category == "DANGER") {
+      document.getElementById('audio_danger').play();
     }
 
     $ionicModal.fromTemplateUrl('templates/modal.html', {
@@ -101,14 +105,47 @@ angular.module('starter.controllers', [ 'ngFitText' ])
       clearTimeout($scope.timeout_cat);
       $scope.timeout_cat = setInterval(function () {
         if($scope.countdownCat > 0)
-          $scope.countdownCat = $scope.countdownCat - 1;
+        $scope.countdownCat = $scope.countdownCat - 1;
       }, 1000);
     });
 
   });
 
-  $rootScope.socket.on('message_subcat', function(msg){
-    console.log("SUBCAT:" + msg);
+  $rootScope.socket.on('message_subcat', function(msg) {
+    console.log("CAT:" + msg);
+    $scope.category = msg.replace("btn_", "").toUpperCase();
+
+    if (typeof $scope.modal != "undefined") {
+      if ($scope.modal.isShown())
+      $scope.modal.hide();
+
+      $scope.modal.remove();
+    }
+
+    if ($scope.category == "DANGER") {
+      var audio = new Audio("alert.wav");
+      audio.play();
+    }
+
+    $ionicModal.fromTemplateUrl('templates/modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+      $scope.modal.show();
+      clearTimeout($scope.timeout);
+      $scope.timeout = setTimeout(function(){
+        $scope.modal.hide();
+      }, 5000);
+
+      $scope.countdownCat = 5;
+      clearTimeout($scope.timeout_cat);
+      $scope.timeout_cat = setInterval(function () {
+        if($scope.countdownCat > 0)
+        $scope.countdownCat = $scope.countdownCat - 1;
+      }, 1000);
+    });
+
   });
 
   $scope.btnBack = function() {
