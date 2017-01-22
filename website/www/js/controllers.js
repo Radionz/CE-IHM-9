@@ -10,8 +10,8 @@ angular.module('starter.controllers', [ 'ngFitText' ])
 })
 
 .controller('SettingsCtrl', function($scope, $state, $rootScope) {
-  $scope.volume = 100;
-  $scope.range = 0;
+  $rootScope.volume = 100;
+  $rootScope.range = 0;
 })
 
 .controller('LoadingCtrl', function($scope, $ionicLoading, $state, $timeout, $ionicHistory, $rootScope, WORK_STATE, SERVER_ADDR) {
@@ -44,10 +44,9 @@ angular.module('starter.controllers', [ 'ngFitText' ])
   });
 })
 
-.controller('MainCtrl', function($scope, $state, $rootScope, $ionicPopup, $ionicModal) {
-  $scope.$on("$ionicView.beforeEnter", function(event, data){$scope.countdownCat = 5;
-    $scope.countdownCat = 5;
-    hidesubcategoryregory();
+.controller('MainCtrl', function($scope, $state, $rootScope, $ionicPopup, $ionicModal, $interval) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
+    hideSubcategory();
   });
 
   if (typeof $rootScope.socket === "undefined") {
@@ -56,75 +55,53 @@ angular.module('starter.controllers', [ 'ngFitText' ])
 
   $scope.btnCategory = function(event) {
     $rootScope.socket.emit('message_cat', event.currentTarget.id);
-    displaysubcategoryregory(event.currentTarget);
+    displaySubcategory(event.currentTarget);
     clearTimeout($scope.timeout_cat);
     $scope.timeout_cat = setTimeout(function(){
-      hidesubcategoryregory();
-    }, 5000);
-  };
-  $scope.btnSubCategory = function(event) {
-    $rootScope.socket.emit('message_subcat', event.currentTarget.id);
-    hidesubcategoryregory();
+      hideSubcategory();
+    }, 10000);
   };
 
-  function start_countdown(time) {
-    $scope.countdownCat = time;
-    setInterval(function () {
-      if(time > 0)
-      start_countdown(time-1);
-    }, 1000);
-  }
+  $scope.btnSubCategory = function(event) {
+    $rootScope.socket.emit('message_subcat', event.currentTarget.id);
+    hideSubcategory();
+  };
 
   $rootScope.socket.on('message_cat', function(msg) {
     console.log("CAT:" + msg);
     $scope.category = msg.replace("btn_", "").toUpperCase();
 
-    if (typeof $scope.modal != "undefined") {
-      if ($scope.modal.isShown())
-      $scope.modal.hide();
-
-      $scope.modal.remove();
+    switch ($scope.category) {
+      case "DANGER":
+      var audio = new Audio("alert.wav");
+      audio.play();
+      $scope.modalColor = "#cf2a27";
+      break;
+      case "COMPORTEMENT":
+      $scope.modalColor = "#ff9900";
+      break;
+      case "ANOMALIE":
+      $scope.modalColor = "#f1c232";
+      break;
+      default:
     }
 
-    if ($scope.category == "DANGER") {
-      document.getElementById('audio_danger').play();
-    }
-
-    $ionicModal.fromTemplateUrl('templates/modal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal;
-      $scope.modal.show();
-      clearTimeout($scope.timeout);
-      $scope.timeout = setTimeout(function(){
-        $scope.modal.hide();
-      }, 5000);
-
-      $scope.countdownCat = 5;
-      clearTimeout($scope.timeout_cat);
-      $scope.timeout_cat = setInterval(function () {
-        if($scope.countdownCat > 0)
-        $scope.countdownCat = $scope.countdownCat - 1;
-      }, 1000);
-    });
-
+    showModal();
   });
 
   $rootScope.socket.on('message_subcat', function(msg) {
     console.log("CAT:" + msg);
     $scope.category = msg.replace("btn_", "").toUpperCase();
 
+    showModal();
+  });
+
+  function showModal() {
     if (typeof $scope.modal != "undefined") {
       if ($scope.modal.isShown())
       $scope.modal.hide();
 
       $scope.modal.remove();
-    }
-
-    if ($scope.category == "DANGER") {
-      var audio = new Audio("alert.wav");
-      audio.play();
     }
 
     $ionicModal.fromTemplateUrl('templates/modal.html', {
@@ -136,34 +113,45 @@ angular.module('starter.controllers', [ 'ngFitText' ])
       clearTimeout($scope.timeout);
       $scope.timeout = setTimeout(function(){
         $scope.modal.hide();
-      }, 5000);
+      }, 10000);
 
-      $scope.countdownCat = 5;
-      clearTimeout($scope.timeout_cat);
-      $scope.timeout_cat = setInterval(function () {
-        if($scope.countdownCat > 0)
-        $scope.countdownCat = $scope.countdownCat - 1;
+      $scope.countdownModal = 10;
+      $interval.cancel($scope.watchTimeRemainingCountdownModal);
+      $scope.watchTimeRemainingCountdownModal = $interval(function(){
+        $scope.countdownModal = $scope.countdownModal - 1 ;
+        if($scope.countdownModal<=0){
+          $interval.cancel($scope.watchTimeRemainingCountdownModal);
+        }
       }, 1000);
     });
-
-  });
+  }
 
   $scope.btnBack = function() {
-    hidesubcategoryregory();
+    hideSubcategory();
   };
 
-  function hidesubcategoryregory() {
+  function hideSubcategory() {
     $('#btn_danger, #btn_comportement, #btn_anomalie').show();
     $('#btn_back, #subcategory_danger, #subcategory_comportement, #subcategory_anomalie').hide();
 
     $('#btn_clicked').html("");
   }
 
-  function displaysubcategoryregory(btn_clicked) {
+  function displaySubcategory(btn_clicked) {
     $('#btn_back').show();
+
+    $scope.countdownCat = 10;
+    $interval.cancel($scope.watchTimeRemaining);
+    $scope.watchTimeRemaining = $interval(function(){
+      $scope.countdownCat = $scope.countdownCat - 1 ;
+      if($scope.countdownCat<=0){
+        $interval.cancel($scope.watchTimeRemaining);
+      }
+    }, 1000);
+
     $('#btn_danger, #btn_comportement, #btn_anomalie, #subcategory_danger, #subcategory_comportement, #subcategory_anomalie').hide();
 
-    $('#btn_clicked').html("<h1 class='center'>" + angular.element(btn_clicked).text() + "</h1>");
+    $('#btn_clicked').html("<h2 class='center'>" + angular.element(btn_clicked).text() + "</h2>");
     $(btn_clicked.id.replace("btn_", "#subcategory_")).show();
   }
 
