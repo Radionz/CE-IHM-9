@@ -1,22 +1,24 @@
 <ion-view view-title="DriveSafer">
   <ion-content>
-    <h1 class="center">Ecran principal</h1>
     <div class="row">
       <div class="col">
-        <button id="btn_danger" class="button button-block" style="background-color: #cf2a27; color: #fff;" ng-click="btnCategory($event)">
-          DANGER
+        <button id="btn_danger" class="button" style="background-color: #cf2a27; color: #fff;" ng-click="btnCategory($event)">
+          <img ng-src="img/danger.png" alt="">
+          <p>DANGER</p>
         </button>
-        <button id="btn_back" class="button button-block button-dark icon-left ion-chevron-left" ng-click="btnBack()">Retour</button>
+        <button id="btn_back" class="button button-back button-dark icon-left ion-chevron-left" ng-click="btnBack()">Retour ({{countdownCat}})</button>
       </div>
       <div class="col">
-        <button id="btn_comportement" class="button button-block" style="background-color: #ff9900; color: #fff;" ng-click="btnCategory($event)">
-          COMPORTEMENT
+        <button id="btn_comportement" class="button" style="background-color: #ff9900; color: #fff;" ng-click="btnCategory($event)">
+          <img ng-src="img/comportement.png" alt="">
+          <p>COMPORTEMENT</p>
         </button>
         <div id="btn_clicked"></div>
       </div>
       <div class="col">
-        <button id="btn_anomalie" class="button button-block" style="background-color: #f1c232; color: #fff;" ng-click="btnCategory($event)">
-          ANOMALIE
+        <button id="btn_anomalie" class="button" style="background-color: #f1c232; color: #fff;" ng-click="btnCategory($event)">
+          <img ng-src="img/anomalie.png" alt="">
+          <p>ANOMALIE</p>
         </button>
       </div>
     </div>
@@ -24,18 +26,21 @@
     <!-- DANGER -->
     <div id="subcategory_danger" class="row">
       <div class="col">
-        <button id="btn_accident" class="button button-block" style="background-color: #cf2a27; color: #fff;" ng-click="btnSubCategory($event)">
-          ACCIDENT
+        <button id="btn_accident" class="button" style="background-color: #cf2a27; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/accident.png" alt="">
+          <p>ACCIDENT</p>
         </button>
       </div>
       <div class="col">
-        <button id="btn_chaussee" class="button button-block" style="background-color: #cf2a27; color: #fff;" ng-click="btnSubCategory($event)">
-          CHAUSSEE
+        <button id="btn_chaussee" class="button" style="background-color: #cf2a27; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/route.png" alt="">
+          <p>CHAUSSEE</p>
         </button>
       </div>
       <div class="col">
-        <button id="btn_vigilance" class="button button-block" style="background-color: #cf2a27; color: #fff;" ng-click="btnSubCategory($event)">
-          VIGILANCE
+        <button id="btn_vigilance" class="button" style="background-color: #cf2a27; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/signalisation.png" alt="">
+          <p>VIGILANCE</p>
         </button>
       </div>
     </div>
@@ -43,18 +48,21 @@
     <!-- COMPORTEMENT -->
     <div id="subcategory_comportement" class="row">
       <div class="col">
-        <button id="btn_vitesse" class="button button-block" style="background-color: #ff9900; color: #fff;" ng-click="btnSubCategory($event)">
-          VITESSE
+        <button id="btn_vitesse" class="button" style="background-color: #ff9900; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/vitesse.png" alt="">
+          <p>VITESSE</p>
         </button>
       </div>
       <div class="col">
-        <button id="btn_distance" class="button button-block" style="background-color: #ff9900; color: #fff;" ng-click="btnSubCategory($event)">
-          DISTANCE SECU
+        <button id="btn_distance" class="button" style="background-color: #ff9900; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/route.png" alt="">
+          <p>DISTANCE SECU</p>
         </button>
       </div>
       <div class="col">
-        <button id="btn_conduite" class="button button-block" style="background-color: #ff9900; color: #fff;" ng-click="btnSubCategory($event)">
-          CONDUITE
+        <button id="btn_conduite" class="button" style="background-color: #ff9900; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/conduite.png" alt="">
+          <p>CONDUITE</p>
         </button>
       </div>
     </div>
@@ -62,18 +70,21 @@
     <!--  ANOMALIE -->
     <div id="subcategory_anomalie" class="row">
       <div class="col">
-        <button id="btn_eclairage" class="button button-block" style="background-color: #f1c232; color: #fff;" ng-click="btnSubCategory($event)">
-          ECLAIRAGE
+        <button id="btn_eclairage" class="button" style="background-color: #f1c232; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/eclairage.png" alt="">
+          <p>ECLAIRAGE</p>
         </button>
       </div>
       <div class="col">
-        <button id="btn_carrosserie" class="button button-block" style="background-color: #f1c232; color: #fff;" ng-click="btnSubCategory($event)">
-          CARROSSERIE
+        <button id="btn_carrosserie" class="button" style="background-color: #f1c232; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/carrosserie.png" alt="">
+          <p>CARROSSERIE</p>
         </button>
       </div>
       <div class="col">
-        <button id="btn_pneumatique" class="button button-block" style="background-color: #f1c232; color: #fff;" ng-click="btnSubCategory($event)">
-          PNEU
+        <button id="btn_pneumatique" class="button" style="background-color: #f1c232; color: #fff;" ng-click="btnSubCategory($event)">
+          <img ng-src="img/pneu.png" alt="">
+          <p>PNEU</p>
         </button>
       </div>
     </div>
