@@ -14,14 +14,9 @@ io.on('connection', function(socket){
     console.log('user disconnected: ' + socket.id);
   });
 
-  socket.on('message_cat', function(msg){
-    console.log('client:'+ socket.id + ' send message: CAT : ' + msg.replace("btn_", ""));
-    socket.broadcast.emit('message_cat', msg);
-  });
-
-  socket.on('message_subcat', function(msg){
-    console.log('client:'+ socket.id + ' send message: SUBCAT : ' + msg.replace("btn_", ""));
-    socket.broadcast.emit('message_subcat', msg);
+  socket.on('message', function(msg){
+    console.log('client:'+ socket.id + ' send message: ' + msg.replace("btn_", ""));
+    socket.broadcast.emit('message', msg);
   });
 });
 

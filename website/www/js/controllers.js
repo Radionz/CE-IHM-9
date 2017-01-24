@@ -1,6 +1,11 @@
 angular.module('starter.controllers', [ 'ngFitText' ])
 
 .controller('AppCtrl', function($scope, $state, $rootScope) {
+  $rootScope.volume = 100;
+  $rootScope.range = 4;
+  $rootScope.notification = 10;
+  $rootScope.subcat = 10;
+
   $scope.launch = function() {
     if (typeof $rootScope.socket !== "undefined") {
       $rootScope.socket.disconnect();
@@ -10,8 +15,6 @@ angular.module('starter.controllers', [ 'ngFitText' ])
 })
 
 .controller('SettingsCtrl', function($scope, $state, $rootScope) {
-  $rootScope.volume = 100;
-  $rootScope.range = 0;
 })
 
 .controller('LoadingCtrl', function($scope, $ionicLoading, $state, $timeout, $ionicHistory, $rootScope, WORK_STATE, SERVER_ADDR) {
@@ -54,44 +57,35 @@ angular.module('starter.controllers', [ 'ngFitText' ])
   }
 
   $scope.btnCategory = function(event) {
-    $rootScope.socket.emit('message_cat', event.currentTarget.id);
+    $rootScope.socket.emit('message', event.currentTarget.id);
     displaySubcategory(event.currentTarget);
     clearTimeout($scope.timeout_cat);
     $scope.timeout_cat = setTimeout(function(){
       hideSubcategory();
-    }, 10000);
+    }, $rootScope.subcat * 1000);
   };
 
   $scope.btnSubCategory = function(event) {
-    $rootScope.socket.emit('message_subcat', event.currentTarget.id);
+    $rootScope.socket.emit('message', event.currentTarget.id);
     hideSubcategory();
   };
 
-  $rootScope.socket.on('message_cat', function(msg) {
-    console.log("CAT:" + msg);
+  $rootScope.socket.on('message', function(msg) {
+    var danger = ["DANGER", "ACCIDENT", "CHAUSSEE", "VIGILANCE"],
+    comportement = ["COMPORTEMENT", "VITESSE", "DISTANCE", "CONDUITE"],
+    anomalie = ["ANOMALIE", "ECLAIRAGE", "CARROSSERIE", "PNEUMATIQUE"];
     $scope.category = msg.replace("btn_", "").toUpperCase();
 
-    switch ($scope.category) {
-      case "DANGER":
+    if ($.inArray($scope.category, danger) > -1) {
       var audio = new Audio("alert.wav");
+      audio.volume = $rootScope.volume / 100;
       audio.play();
       $scope.modalColor = "#cf2a27";
-      break;
-      case "COMPORTEMENT":
+    } else if ($.inArray($scope.category, comportement) > -1) {
       $scope.modalColor = "#ff9900";
-      break;
-      case "ANOMALIE":
+    } else if ($.inArray($scope.category, anomalie) > -1) {
       $scope.modalColor = "#f1c232";
-      break;
-      default:
     }
-
-    showModal();
-  });
-
-  $rootScope.socket.on('message_subcat', function(msg) {
-    console.log("CAT:" + msg);
-    $scope.category = msg.replace("btn_", "").toUpperCase();
 
     showModal();
   });
@@ -113,13 +107,13 @@ angular.module('starter.controllers', [ 'ngFitText' ])
       clearTimeout($scope.timeout);
       $scope.timeout = setTimeout(function(){
         $scope.modal.hide();
-      }, 10000);
+      }, $rootScope.notification * 1000);
 
-      $scope.countdownModal = 10;
+      $scope.countdownModal = $rootScope.notification;
       $interval.cancel($scope.watchTimeRemainingCountdownModal);
       $scope.watchTimeRemainingCountdownModal = $interval(function(){
         $scope.countdownModal = $scope.countdownModal - 1 ;
-        if($scope.countdownModal<=0){
+        if($scope.countdownModal <= 0){
           $interval.cancel($scope.watchTimeRemainingCountdownModal);
         }
       }, 1000);
@@ -140,11 +134,11 @@ angular.module('starter.controllers', [ 'ngFitText' ])
   function displaySubcategory(btn_clicked) {
     $('#btn_back').show();
 
-    $scope.countdownCat = 10;
+    $scope.countdownCat = $rootScope.subcat;
     $interval.cancel($scope.watchTimeRemaining);
     $scope.watchTimeRemaining = $interval(function(){
       $scope.countdownCat = $scope.countdownCat - 1 ;
-      if($scope.countdownCat<=0){
+      if($scope.countdownCat <= 0){
         $interval.cancel($scope.watchTimeRemaining);
       }
     }, 1000);

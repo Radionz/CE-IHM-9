@@ -3,21 +3,37 @@
     <div class="list">
       <div class="item item-divider">
         Volume des alertes sonores (Danger uniquement)
-        <span class="badge badge-volume">{{volume}} %</span>
+        <span class="badge badge-volume">{{$root.volume}} %</span>
       </div>
       <div class="item range range-positive">
         <i class="icon ion-volume-low"></i>
-          <input ng-model="volume" type="range" min="0" max="100" name="volume">
+        <input ng-model="$root.volume" type="range" min="0" max="100" name="volume">
         <i class="icon ion-volume-high"></i>
       </div>
     </div>
     <div class="item item-divider">
       Distance des alertes reçues
-      <span class="badge badge-range">{{range}} km</span>
+      <span class="badge badge-range">{{$root.range}} km</span>
     </div>
     <div class="item range range-positive">
       <i class="icon ion-ios-location"></i>
-        <input ng-model="range" type="range" min="0" max="10" name="distance">
+      <input ng-model="$root.range" type="range" min="0" max="10" name="distance">
+    </div>
+    <div class="item item-divider">
+      Temps d'affichage des notification
+      <span class="badge badge-range">{{$root.notification}} secondes</span>
+    </div>
+    <div class="item range range-positive">
+      <i class="icon ion-ios-clock"></i>
+      <input ng-model="$root.notification" type="range" min="3" max="20" name="notification">
+    </div>
+    <div class="item item-divider">
+      Temps d'affichage des sous-catégories
+      <span class="badge badge-range">{{$root.subcat}} secondes</span>
+    </div>
+    <div class="item range range-positive">
+      <i class="icon ion-ios-clock"></i>
+      <input ng-model="$root.subcat" type="range" min="3" max="15" name="subcat">
     </div>
   </ion-content>
 </ion-view>
